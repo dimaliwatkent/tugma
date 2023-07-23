@@ -13,6 +13,9 @@ const RhymeGenerator = () => {
   const handleRadioChange = (id) => {
     setRhymeType(id);
   };
+  useEffect(() => {
+    findRhymes(); // Call findRhymes whenever rhymeType changes
+  }, [rhymeType]);
 
   useEffect(() => {
     const getWordList = async () => {
@@ -45,7 +48,6 @@ const RhymeGenerator = () => {
     setIsLoaded(true);
     const userVowels = extractVowels(userInput).join("");
     const foundRhymes = [];
-
     // Prevents from returning all the words
     if (userInput.trim() === "" || !userVowels) {
       setRhymes([]);
@@ -99,7 +101,6 @@ const RhymeGenerator = () => {
         </button>
       </div>
       <RadioButton onRadioChange={handleRadioChange} />
-      <h1>{rhymeType}</h1>
 
       {isLoaded && rhymes.length > 1 ? (
         <div>
