@@ -13,6 +13,7 @@ const RhymeGenerator = () => {
   const handleRadioChange = (id) => {
     setRhymeType(id);
   };
+
   useEffect(() => {
     const getWordList = async () => {
       const wordList = await fetchTagalogWordList();
@@ -44,6 +45,13 @@ const RhymeGenerator = () => {
     setIsLoaded(true);
     const userVowels = extractVowels(userInput).join("");
     const foundRhymes = [];
+
+    // Prevents from returning all the words
+    if (userInput.trim() === "" || !userVowels) {
+      setRhymes([]);
+      console.log("empty");
+      return;
+    }
 
     for (let word of wordList) {
       const newWord = word.slice(0, word.length - 1);
