@@ -19,7 +19,7 @@ const SideBarLink = ({ icon, text = "tooltip 💡", to }) => (
     to={to}
     // activeClassName="active"
     className="sidebar-link"
-    exact={true}
+    // exact={true}
   >
     <div className="sidebar-icon group">
       {icon}

@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 
-const RadioButtons = () => {
+const RadioButtons = ({ onRadioChange }) => {
   const [checkedIndex, setCheckedIndex] = useState(0);
 
   const radioButtons = [
@@ -21,10 +21,16 @@ const RadioButtons = () => {
   const handleRadioChange = (event) => {
     const index = parseInt(event.target.id, 10);
     setCheckedIndex(index);
+    if (onRadioChange) {
+      onRadioChange(radioButtons[index].id); // Call the onRadioChange callback and pass the selected ID
+    }
   };
 
   const handleLabelClick = (index) => {
     setCheckedIndex(index);
+    if (onRadioChange) {
+      onRadioChange(radioButtons[index].id); // Call the onRadioChange callback and pass the selected ID
+    }
   };
 
   return (

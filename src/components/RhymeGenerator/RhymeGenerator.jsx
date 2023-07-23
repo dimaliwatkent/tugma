@@ -8,7 +8,11 @@ const RhymeGenerator = () => {
   const [wordList, setWordList] = useState([]);
   const [isLoaded, setIsLoaded] = useState(false);
   const [copiedIndex, setCopiedIndex] = useState(-1);
+  const [rhymeType, setRhymeType] = useState("multisyllabic");
 
+  const handleRadioChange = (id) => {
+    setRhymeType(id);
+  };
   useEffect(() => {
     const getWordList = async () => {
       const wordList = await fetchTagalogWordList();
@@ -26,20 +30,39 @@ const RhymeGenerator = () => {
         extractedVowels.push(char.toLowerCase());
       }
     }
-
+    if (
+      rhymeType === "multisyllabic" &&
+      extractedVowels.length > 0 &&
+      !vowels.includes(word[word.length - 2].toLowerCase())
+    ) {
+      extractedVowels.push(word[word.length - 2]);
+    }
     return extractedVowels;
   };
 
   const findRhymes = () => {
     setIsLoaded(true);
-    const userVowels = extractVowels(userInput);
+    const userWord = userInput + " ";
+    const userVowels = extractVowels(userWord).join("");
     const foundRhymes = [];
 
-    for (let word of wordList) {
-      const wordVowels = extractVowels(word);
-
-      if (userVowels.join("") === wordVowels.join("")) {
-        foundRhymes.push(word);
+    if (rhymeType === "end") {
+      for (let word of wordList) {
+        console.log(userWord.slice(-3));
+        console.log(word.slice(-3));
+        console.log(word);
+        if (word.endsWith(userWord.slice(-3))) {
+          foundRhymes.push(word);
+        }
+      }
+    } else {
+      for (let word of wordList) {
+        const wordVowels = extractVowels(word).join("");
+        if (wordVowels.endsWith(userVowels)) {
+          if (wordVowels === userVowels) {
+            foundRhymes.unshift(word);
+          } else foundRhymes.push(word);
+        }
       }
     }
 
@@ -72,7 +95,8 @@ const RhymeGenerator = () => {
           RHYME
         </button>
       </div>
-      <RadioButton />
+      <RadioButton onRadioChange={handleRadioChange} />
+      <h1>{rhymeType}</h1>
 
       {isLoaded && rhymes.length > 1 ? (
         <div>
