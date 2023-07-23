@@ -33,31 +33,26 @@ const RhymeGenerator = () => {
     if (
       rhymeType === "multisyllabic" &&
       extractedVowels.length > 0 &&
-      !vowels.includes(word[word.length - 2].toLowerCase())
+      !vowels.includes(word[word.length - 1].toLowerCase())
     ) {
-      extractedVowels.push(word[word.length - 2]);
+      extractedVowels.push(word[word.length - 1]);
     }
     return extractedVowels;
   };
 
   const findRhymes = () => {
     setIsLoaded(true);
-    const userWord = userInput + " ";
-    const userVowels = extractVowels(userWord).join("");
+    const userVowels = extractVowels(userInput).join("");
     const foundRhymes = [];
 
-    if (rhymeType === "end") {
-      for (let word of wordList) {
-        console.log(userWord.slice(-3));
-        console.log(word.slice(-3));
-        console.log(word);
-        if (word.endsWith(userWord.slice(-3))) {
+    for (let word of wordList) {
+      const newWord = word.slice(0, word.length - 1);
+      if (rhymeType === "end") {
+        if (newWord.endsWith(userInput.slice(-2))) {
           foundRhymes.push(word);
         }
-      }
-    } else {
-      for (let word of wordList) {
-        const wordVowels = extractVowels(word).join("");
+      } else {
+        const wordVowels = extractVowels(newWord).join("");
         if (wordVowels.endsWith(userVowels)) {
           if (wordVowels === userVowels) {
             foundRhymes.unshift(word);
