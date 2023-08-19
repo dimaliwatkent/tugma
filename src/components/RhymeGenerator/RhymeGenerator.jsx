@@ -34,6 +34,8 @@ const RhymeGenerator = () => {
         extractedVowels.push(char.toLowerCase());
       }
     }
+
+    //pushes the last letter in the word
     if (
       rhymeType === "multisyllabic" &&
       extractedVowels.length > 0 &&
