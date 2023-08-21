@@ -1,18 +1,16 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo, useRef } from "react";
 import RadioButton from "./RadioButton";
 import fetchTagalogWordList from "./WordListFetch";
 
 const RhymeGenerator = () => {
   const [userInput, setUserInput] = useState("");
   const [rhymes, setRhymes] = useState([]);
-  const [wordList, setWordList] = useState([]);
   const [isLoaded, setIsLoaded] = useState(false);
   const [copiedIndex, setCopiedIndex] = useState(-1);
   const [rhymeType, setRhymeType] = useState("multisyllabic");
 
-  const handleRadioChange = (id) => {
-    setRhymeType(id);
-  };
+  const wordListRef = useRef([]);
+
   useEffect(() => {
     findRhymes(); // Call findRhymes whenever rhymeType changes
   }, [rhymeType]);
@@ -20,59 +18,52 @@ const RhymeGenerator = () => {
   useEffect(() => {
     const getWordList = async () => {
       const wordList = await fetchTagalogWordList();
-      setWordList(wordList);
+      wordListRef.current = wordList;
     };
     getWordList();
   }, []);
 
-  const extractVowels = (word) => {
-    const vowels = ["a", "e", "i", "o", "u"];
-    const extractedVowels = [];
-
-    for (let char of word) {
-      if (vowels.includes(char.toLowerCase())) {
-        extractedVowels.push(char.toLowerCase());
+  const extractVowels = useMemo(() => {
+    const vowels = new Set(["a", "e", "i", "o", "u"]);
+    return (word) => {
+      const extractedVowels = [];
+      for (let char of word) {
+        if (vowels.has(char.toLowerCase())) {
+          extractedVowels.push(char.toLowerCase());
+        }
       }
-    }
-
-    //pushes the last letter in the word
-    if (
-      rhymeType === "multisyllabic" &&
-      extractedVowels.length > 0 &&
-      !vowels.includes(word[word.length - 1].toLowerCase())
-    ) {
-      extractedVowels.push(word[word.length - 1]);
-    }
-    return extractedVowels;
-  };
+      if (
+        rhymeType === "multisyllabic" &&
+        extractedVowels.length > 0 &&
+        !vowels.has(word[word.length - 1].toLowerCase())
+      ) {
+        extractedVowels.push(word[word.length - 1]);
+      }
+      return extractedVowels;
+    };
+  }, [rhymeType]);
 
   const findRhymes = () => {
     setIsLoaded(true);
     const userVowels = extractVowels(userInput).join("");
-    const foundRhymes = [];
-    // Prevents from returning all the words
-    if (userInput.trim() === "" || !userVowels) {
-      setRhymes([]);
-      console.log("empty");
-      return;
-    }
-
-    for (let word of wordList) {
+    const foundRhymes = wordListRef.current.reduce((result, word) => {
       const newWord = word.slice(0, word.length - 1);
       if (rhymeType === "end") {
         if (newWord.endsWith(userInput.slice(-2))) {
-          foundRhymes.push(word);
+          result.push(word);
         }
       } else {
         const wordVowels = extractVowels(newWord).join("");
         if (wordVowels.endsWith(userVowels)) {
           if (wordVowels === userVowels) {
-            foundRhymes.unshift(word);
-          } else foundRhymes.push(word);
+            result.unshift(word);
+          } else {
+            result.push(word);
+          }
         }
       }
-    }
-
+      return result;
+    }, []);
     setRhymes(foundRhymes);
   };
 
@@ -102,7 +93,7 @@ const RhymeGenerator = () => {
           RHYME
         </button>
       </div>
-      <RadioButton onRadioChange={handleRadioChange} />
+      <RadioButton onRadioChange={(id) => setRhymeType(id)} />
 
       {isLoaded && rhymes.length > 1 ? (
         <div>
