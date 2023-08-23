@@ -5,7 +5,6 @@ import fetchTagalogWordList from "./WordListFetch";
 const RhymeGenerator = () => {
   const [userInput, setUserInput] = useState("");
   const [rhymes, setRhymes] = useState([]);
-  const [isLoaded, setIsLoaded] = useState(false);
   const [copiedIndex, setCopiedIndex] = useState(-1);
   const [rhymeType, setRhymeType] = useState("multisyllabic");
 
@@ -44,7 +43,9 @@ const RhymeGenerator = () => {
   }, [rhymeType]);
 
   const findRhymes = () => {
-    setIsLoaded(true);
+    if (userInput.trim() === "") {
+      return [];
+    }
     const userVowels = extractVowels(userInput).join("");
     const foundRhymes = wordListRef.current.reduce((result, word) => {
       const newWord = word.slice(0, word.length - 1);
@@ -95,7 +96,7 @@ const RhymeGenerator = () => {
       </div>
       <RadioButton onRadioChange={(id) => setRhymeType(id)} />
 
-      {isLoaded && rhymes.length > 1 ? (
+      {rhymes.length > 1 ? (
         <div>
           <h2>Rhyming Words: {rhymes.length}</h2>
           <div className="grid grid-cols-5 gap-4">
@@ -115,7 +116,7 @@ const RhymeGenerator = () => {
             ))}
           </div>
         </div>
-      ) : isLoaded && (rhymes.length === 1 || rhymes.length === 0) ? (
+      ) : rhymes.length === 1 || rhymes.length === 0 ? (
         <p>No rhyming words found.</p>
       ) : null}
     </div>
