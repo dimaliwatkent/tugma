@@ -1,16 +1,31 @@
-import React, { useState } from "react";
+import React, { useState, useRef, useEffect } from "react";
+import { findRhymes } from "./RhymeGenerator/RhymeGenerator";
+import fetchTagalogWordList from "./RhymeGenerator/WordListFetch";
 
 const Random = () => {
   const [randomWord, setRandomWord] = useState("");
+  const wordListRef = useRef([]);
+
+  useEffect(() => {
+    fetchTagalogWordList().then((wordList) => {
+      wordListRef.current = wordList;
+    });
+  }, []);
 
   const handleRandomClick = async () => {
     try {
-      const response = await fetch("src/components/TagalogWords.txt");
-      const text = await response.text();
-      const words = text.split("\n");
-      const randomIndex = Math.floor(Math.random() * words.length);
-      const word = words[randomIndex];
+      const randomIndex = Math.floor(
+        Math.random() * wordListRef.current.length
+      );
+      const word = wordListRef.current[randomIndex];
       setRandomWord(word);
+
+      console.log("Word:", word);
+      console.log("Word List:", wordListRef.current);
+      console.log(
+        "Rhymes:",
+        findRhymes(word, "multisyllabic", wordListRef.current)
+      );
     } catch (error) {
       console.error("Error fetching TagalogWords.txt:", error);
     }
@@ -18,7 +33,7 @@ const Random = () => {
 
   return (
     <div
-      className=" container mx-auto flex justify-center items-center"
+      className="container mx-auto flex justify-center items-center"
       onClick={handleRandomClick}
     >
       <h1 className="text-center select-none">

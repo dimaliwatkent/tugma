@@ -2,6 +2,49 @@ import React, { useState, useEffect, useMemo, useRef } from "react";
 import RadioButton from "./RadioButton";
 import fetchTagalogWordList from "./WordListFetch";
 
+const extractVowels = (word, rhymeType) => {
+  const vowels = new Set(["a", "e", "i", "o", "u"]);
+  const extractedVowels = [];
+  for (let char of word) {
+    if (vowels.has(char.toLowerCase())) {
+      extractedVowels.push(char.toLowerCase());
+    }
+  }
+  if (
+    rhymeType === "multisyllabic" &&
+    extractedVowels.length > 0 &&
+    !vowels.has(word[word.length - 1].toLowerCase())
+  ) {
+    extractedVowels.push(word[word.length - 1]);
+  }
+  return extractedVowels;
+};
+
+export const findRhymes = (userInput, rhymeType, wordList) => {
+  if (userInput.trim() === "") {
+    return [];
+  }
+  const userVowels = extractVowels(userInput, rhymeType).join("");
+  const foundRhymes = wordList.reduce((result, word) => {
+    if (rhymeType === "end") {
+      if (word.endsWith(userInput.slice(-2))) {
+        result.push(word);
+      }
+    } else {
+      const wordVowels = extractVowels(word, rhymeType).join("");
+      if (wordVowels.endsWith(userVowels)) {
+        if (wordVowels === userVowels) {
+          result.unshift(word);
+        } else {
+          result.push(word);
+        }
+      }
+    }
+    return result;
+  }, []);
+  return foundRhymes;
+};
+
 const RhymeGenerator = () => {
   const [userInput, setUserInput] = useState("");
   const [rhymes, setRhymes] = useState([]);
@@ -11,60 +54,17 @@ const RhymeGenerator = () => {
   const wordListRef = useRef([]);
 
   useEffect(() => {
-    findRhymes(); // Call findRhymes whenever rhymeType changes
-  }, [rhymeType]);
-
-  useEffect(() => {
-    const getWordList = async () => {
-      const wordList = await fetchTagalogWordList();
+    fetchTagalogWordList().then((wordList) => {
       wordListRef.current = wordList;
-    };
-    getWordList();
+    });
   }, []);
 
-  const extractVowels = useMemo(() => {
-    const vowels = new Set(["a", "e", "i", "o", "u"]);
-    return (word) => {
-      const extractedVowels = [];
-      for (let char of word) {
-        if (vowels.has(char.toLowerCase())) {
-          extractedVowels.push(char.toLowerCase());
-        }
-      }
-      if (
-        rhymeType === "multisyllabic" &&
-        extractedVowels.length > 0 &&
-        !vowels.has(word[word.length - 1].toLowerCase())
-      ) {
-        extractedVowels.push(word[word.length - 1]);
-      }
-      return extractedVowels;
-    };
+  useEffect(() => {
+    handleFindRhymes(); // Call findRhymes whenever rhymeType changes
   }, [rhymeType]);
 
-  const findRhymes = () => {
-    if (userInput.trim() === "") {
-      return [];
-    }
-    const userVowels = extractVowels(userInput).join("");
-    const foundRhymes = wordListRef.current.reduce((result, word) => {
-      const newWord = word.slice(0, word.length - 1);
-      if (rhymeType === "end") {
-        if (newWord.endsWith(userInput.slice(-2))) {
-          result.push(word);
-        }
-      } else {
-        const wordVowels = extractVowels(newWord).join("");
-        if (wordVowels.endsWith(userVowels)) {
-          if (wordVowels === userVowels) {
-            result.unshift(word);
-          } else {
-            result.push(word);
-          }
-        }
-      }
-      return result;
-    }, []);
+  const handleFindRhymes = () => {
+    const foundRhymes = findRhymes(userInput, rhymeType, wordListRef.current);
     setRhymes(foundRhymes);
   };
 
@@ -88,13 +88,17 @@ const RhymeGenerator = () => {
           required
         />
         <button
-          onClick={findRhymes}
+          onClick={handleFindRhymes}
           className="text-color2 absolute right-2.5 bottom-2.5 bg-color1 hover:bg-[#213f57] focus:outline-none font-medium rounded-lg text-sm px-4 py-2"
         >
           RHYME
         </button>
       </div>
-      <RadioButton onRadioChange={(id) => setRhymeType(id)} />
+      <RadioButton
+        onRadioChange={(id) => {
+          setRhymeType(id);
+        }}
+      />
 
       {rhymes.length > 1 ? (
         <div>
