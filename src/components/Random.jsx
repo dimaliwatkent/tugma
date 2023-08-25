@@ -33,11 +33,15 @@ const Random = () => {
 
   return (
     <div
-      className="container mx-auto flex justify-center items-center"
+      className="container mx-auto flex justify-center  min-h-screen"
       onClick={handleRandomClick}
     >
       <h1 className="text-center select-none">
-        {randomWord || "Click to Generate a Random Word"}
+        {randomWord || (
+          <p className="text-2xl md:text-5xl">
+            Click to Generate a Random Word
+          </p>
+        )}
       </h1>
     </div>
   );

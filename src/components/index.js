@@ -1,4 +1,4 @@
-import SideBar from "./sidebar";
+import SideBar from "./SideBar";
 import TopBar from "./TopBar";
 import Rhyme from "./Rhyme";
 import Write from "./Write";

@@ -3,7 +3,7 @@ import { TopBar, SideBar, Rhyme, Write, Random } from "./components";
 
 export default function App() {
   return (
-    <div className="bg-color2">
+    <div className="bg-color2 ">
       <TopBar />
       <div className="flex">
         <SideBar />

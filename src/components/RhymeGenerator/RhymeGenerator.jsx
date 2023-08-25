@@ -26,6 +26,9 @@ export const findRhymes = (userInput, rhymeType, wordList) => {
   }
   const userVowels = extractVowels(userInput, rhymeType).join("");
   const foundRhymes = wordList.reduce((result, word) => {
+    if (userInput === word) {
+      return result;
+    }
     if (rhymeType === "end") {
       if (word.endsWith(userInput.slice(-2))) {
         result.push(word);
@@ -77,23 +80,31 @@ const RhymeGenerator = () => {
   };
 
   return (
-    <div className="container mx-auto px-20">
-      <div className="relative">
-        <input
-          type="text"
-          value={userInput}
-          className="block w-full p-3 pl-4 pr-24 text-lg text-gray-900 border-2  border-color1 rounded-lg bg-color3 focus:border-[#213f57] outline-none placeholder-color4"
-          onChange={(e) => setUserInput(e.target.value)}
-          placeholder="Enter a word"
-          required
-        />
-        <button
-          onClick={handleFindRhymes}
-          className="text-color2 absolute right-2.5 bottom-2.5 bg-color1 hover:bg-[#213f57] focus:outline-none font-medium rounded-lg text-sm px-4 py-2"
-        >
-          RHYME
-        </button>
-      </div>
+    <div className="container mx-auto min-h-screen px-10 md:px-20">
+      <form
+        onSubmit={(e) => {
+          e.preventDefault();
+          handleFindRhymes();
+        }}
+      >
+        <div className="relative">
+          <input
+            type="text"
+            value={userInput}
+            className="block w-full p-3 pl-4 pr-24 text-lg text-gray-900 border-2  border-color1 rounded-lg bg-color3 focus:border-[#213f57] outline-none placeholder-color4"
+            onChange={(e) => setUserInput(e.target.value)}
+            placeholder="Enter a word"
+            required
+          />
+          <button
+            type="submit"
+            className="text-color2 absolute right-2.5 bottom-2.5 bg-color1 hover:bg-[#213f57] focus:outline-none font-medium rounded-lg text-sm px-4 py-2"
+          >
+            RHYME
+          </button>
+        </div>
+      </form>
+
       <RadioButton
         onRadioChange={(id) => {
           setRhymeType(id);
@@ -103,14 +114,14 @@ const RhymeGenerator = () => {
       {rhymes.length > 1 ? (
         <div>
           <h2>Rhyming Words: {rhymes.length}</h2>
-          <div className="grid grid-cols-5 gap-4">
+          <div className="grid grid-cols-3 md:grid-cols-5 gap-4">
             {rhymes.map((rhyme, index) => (
               <div
                 key={index}
                 className="rhyme-result"
                 onClick={() => copyToClipboard(index)}
               >
-                <p className="m-2 flex justify-center">{rhyme}</p>
+                <p className="m-2 flex justify-center px-1">{rhyme}</p>
                 {copiedIndex === index && (
                   <div className="text-color2 text-xs fixed bottom-0 left-0 right-0 text-center bg-color1">
                     Copied on Clipboard
