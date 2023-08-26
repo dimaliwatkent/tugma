@@ -1,6 +1,6 @@
 const fetchTagalogWordList = async () => {
   try {
-    const response = await fetch("src/components/TagalogWords.txt");
+    const response = await fetch("src/assets/TagalogWords.txt");
     const data = await response.text();
     const words = data.split("\n").map((word) => word.replace(/\r/g, ""));
     return words.filter(Boolean);

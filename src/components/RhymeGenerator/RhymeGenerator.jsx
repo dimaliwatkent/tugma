@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo, useRef } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import RadioButton from "./RadioButton";
 import fetchTagalogWordList from "./WordListFetch";
 
