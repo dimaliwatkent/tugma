@@ -8,10 +8,10 @@ export default function App() {
       <div className="flex">
         <SideBar />
         <Routes>
-          <Route path="/" element={<Navigate to="/Rhyme" />} />
-          <Route path="/Rhyme" element={<Rhyme />} />
-          <Route path="/Write" element={<Write />} />
-          <Route path="/Random" element={<Random />} />
+          <Route path="/" element={<Navigate to="/rhyme" />} />
+          <Route path="/rhyme" element={<Rhyme />} />
+          <Route path="/write" element={<Write />} />
+          <Route path="/random" element={<Random />} />
         </Routes>
       </div>
     </div>

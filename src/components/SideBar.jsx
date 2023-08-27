@@ -7,9 +7,9 @@ const SideBar = () => {
   return (
     <>
       <div className="hidden sm:block pt-5 left-0 min-h-screen w-16  flex-col bg-color3 shadow-lg">
-        <SideBarLink icon={<BsMusicNoteBeamed />} text="Rhyme" to="/Rhyme" />
-        <SideBarLink icon={<BsFillPencilFill />} text="Write" to="/Write" />
-        <SideBarLink icon={<FaRandom />} text="Random" to="/Random" />
+        <SideBarLink icon={<BsMusicNoteBeamed />} text="Rhyme" to="/rhyme" />
+        <SideBarLink icon={<BsFillPencilFill />} text="Write" to="/write" />
+        <SideBarLink icon={<FaRandom />} text="Random" to="/random" />
         {/* <div className="flex-grow"></div> */}
       </div>
       {/* for mobile */}
