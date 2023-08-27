@@ -4,6 +4,7 @@ const Write = () => {
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
   const [notes, setNotes] = useState([]);
+  const [editIndex, setEditIndex] = useState(-1);
 
   const handleTitleChange = (event) => {
     setTitle(event.target.value);
@@ -19,7 +20,16 @@ const Write = () => {
       content,
     };
 
-    setNotes((prevNotes) => [...prevNotes, newNote]);
+    if (editIndex === -1) {
+      setNotes((prevNotes) => [...prevNotes, newNote]);
+    } else {
+      setNotes((prevNotes) => {
+        const updatedNotes = [...prevNotes];
+        updatedNotes[editIndex] = newNote;
+        return updatedNotes;
+      });
+      setEditIndex(-1);
+    }
 
     setTitle("");
     setContent("");
@@ -29,6 +39,12 @@ const Write = () => {
     const updatedNotes = [...notes];
     updatedNotes.splice(index, 1);
     setNotes(updatedNotes);
+
+    if (index === editIndex) {
+      setEditIndex(-1);
+      setTitle("");
+      setContent("");
+    }
   };
 
   useEffect(() => {
@@ -76,7 +92,7 @@ const Write = () => {
         className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded"
         onClick={handleSaveNote}
       >
-        Save Note
+        {editIndex === -1 ? "Save Note" : "Update Note"}
       </button>
 
       <div className="mt-8">
@@ -85,12 +101,24 @@ const Write = () => {
           <div className="bg-gray-100 p-4 mb-4" key={index}>
             <h3 className="font-bold">{note.title}</h3>
             <p>{note.content}</p>
-            <button
-              className="bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded mt-2"
-              onClick={() => handleDeleteNote(index)}
-            >
-              Delete
-            </button>
+            <div>
+              <button
+                className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded mt-2 mr-2"
+                onClick={() => {
+                  setEditIndex(index);
+                  setTitle(note.title);
+                  setContent(note.content);
+                }}
+              >
+                Edit
+              </button>
+              <button
+                className="bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded mt-2"
+                onClick={() => handleDeleteNote(index)}
+              >
+                Delete
+              </button>
+            </div>
           </div>
         ))}
       </div>
