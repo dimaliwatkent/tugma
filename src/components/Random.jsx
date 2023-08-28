@@ -19,13 +19,6 @@ const Random = () => {
       );
       const word = wordListRef.current[randomIndex];
       setRandomWord(word);
-
-      console.log("Word:", word);
-      console.log("Word List:", wordListRef.current);
-      console.log(
-        "Rhymes:",
-        findRhymes(word, "multisyllabic", wordListRef.current)
-      );
     } catch (error) {
       console.error("Error fetching TagalogWords.txt:", error);
     }

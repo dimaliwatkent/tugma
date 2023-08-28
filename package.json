@@ -14,8 +14,10 @@
   "dependencies": {
     "@headlessui/react": "^1.7.15",
     "@heroicons/react": "^2.0.18",
+    "@tailwindcss/line-clamp": "^0.4.4",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
+    "react-draggable": "^4.4.5",
     "react-icons": "^4.10.1",
     "react-router-dom": "^6.14.0"
   },

@@ -14,6 +14,9 @@ module.exports = {
       spacing: {
         88: "22rem",
       },
+      lineClamp: {
+        11: "11",
+      },
     },
   },
   plugins: [],
