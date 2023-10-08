@@ -22,38 +22,36 @@ const Write = () => {
   }, [notes]);
 
   return (
-    <div className="container mx-auto p-4">
+    <div className="container mx-auto p-4 min-h-screen">
       <h1>WRITE</h1>
 
       <div className="mt-8">
         <Link to={`/write/${-1}`}>
-          <button className="text-color2 fixed right-2.5 bottom-2.5 bg-color1 hover:bg-[#213f57] focus:outline-none font-medium rounded-lg text-xl px-4 py-2">
+          <button className="text-color2 fixed right-2.5 bottom-2.5 mb-20 md:mb-0 z-30 bg-color1 hover:bg-[#213f57] hover:text-white focus:outline-none font-medium rounded-lg text-xl px-4 py-2">
             Add Note
           </button>
         </Link>
 
-        <div className="flex flex-wrap-reverse gap-4 ">
+        <div className="flex flex-wrap gap-4 justify-center">
           {notes.map((note, index) => (
-            <Link to={`/write/${index}`}>
-              <div
-                className="bg-color3 p-4 w-[300px] rounded-xl border-2 border-color1/75 "
-                key={index}
+            <Link
+              to={`/write/${index}`}
+              className="bg-color3 p-4 w-[300px] rounded-xl border-2 border-color1/75 relative min-h-[60px]"
+              key={index}
+            >
+              <button
+                className="bg-color1 hover:bg-[#213f57] hover:text-white text-color3 font-bold py-2 px-4 rounded-lg mt-2 absolute top-0 right-2 text-xs"
+                onClick={(e) => {
+                  e.preventDefault();
+                  handleDeleteNote(index);
+                }}
               >
-                <div className="line-clamp-11">
-                  <h3 className="font-bold">{note.title}</h3>
-                  <p>{note.content}</p>
-                </div>
-                <div>
-                  <button
-                    className="bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded mt-2"
-                    onClick={(e) => {
-                      e.preventDefault();
-                      handleDeleteNote(index);
-                    }}
-                  >
-                    Delete
-                  </button>
-                </div>
+                Delete
+              </button>
+
+              <div className="line-clamp-3">
+                <h3 className="font-bold text-lg">{note.title}</h3>
+                <p>{note.content}</p>
               </div>
             </Link>
           ))}

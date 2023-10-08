@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { Link, useParams } from "react-router-dom";
 
 const EditNote = () => {
@@ -8,6 +8,8 @@ const EditNote = () => {
   const [content, setContent] = useState("");
   const [editIndex, setEditIndex] = useState(parseInt(index));
   const [note, setNote] = useState(null);
+  const [showSave, setShowSave] = useState(false);
+  const textAreaRef = useRef(null);
 
   useEffect(() => {
     const storedNotes = localStorage.getItem("notes");
@@ -40,6 +42,8 @@ const EditNote = () => {
 
   const handleContentChange = (event) => {
     setContent(event.target.value);
+    // event.target.style.height = "inherit";
+    // event.target.style.height = `${event.target.scrollHeight}px`;
   };
 
   const handleSaveNote = () => {
@@ -59,36 +63,46 @@ const EditNote = () => {
       setNotes(updatedNotes);
       localStorage.setItem("notes", JSON.stringify(updatedNotes));
     }
+    setShowSave(true);
+    setTimeout(() => setShowSave(false), 2000);
   };
+  useEffect(() => {
+    if (textAreaRef.current) {
+      const { scrollTop, scrollLeft } = document.documentElement;
+      textAreaRef.current.style.height = "inherit";
+      textAreaRef.current.style.height = `${textAreaRef.current.scrollHeight}px`;
+      document.documentElement.scrollTop = scrollTop;
+    }
+  }, [content]);
 
   return (
-    <div>
+    <div className="container mx-auto min-h-screen px-10 md:px-20 pb-14">
       <div className="my-4">
-        <label htmlFor="title" className="font-bold">
-          Title:
-        </label>
+        <h1>WRITE</h1>
+
         <input
           type="text"
           id="title"
-          className="border border-gray-300 p-2 mt-1"
+          className="block w-full p-3 pl-4 pr-24 text-xl font-bold text-gray-900 border-2 border-color1 rounded-lg bg-color3  outline-none placeholder-color4"
           value={title}
           onChange={handleTitleChange}
+          placeholder="Title"
         />
       </div>
       <div className="my-4">
-        <label htmlFor="content" className="font-bold">
-          Content:
-        </label>
         <textarea
+          ref={textAreaRef}
           id="content"
-          className="border border-gray-300 p-2 mt-1"
+          className="block w-full p-3 pl-4 pr-24 text-lg text-gray-900 border-2  border-color1 rounded-lg bg-color3 outline-none placeholder-color4 "
           rows="4"
           value={content}
           onChange={handleContentChange}
+          placeholder="Write something..."
+          style={{ overflow: "hidden" }}
         ></textarea>
       </div>
       <button
-        className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded"
+        className="text-color2 bg-color1 hover:bg-[#213f57] hover:text-white focus:outline-none font-medium rounded-lg text-lg px-4 py-2"
         onClick={handleSaveNote}
       >
         {editIndex === -1 ? (
@@ -96,12 +110,12 @@ const EditNote = () => {
         ) : (
           "Update Note"
         )}
-      </button>
-      <button
-        onClick={() => console.log(notes)}
-        className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded mt-2 mr-2"
-      >
-        clg
+
+        {showSave && (
+          <div className="text-color2 text-xs fixed bottom-0 left-0 right-0 text-center bg-color1 z-20 mb-[70px] md:mb-0">
+            Note Saved
+          </div>
+        )}
       </button>
     </div>
   );
