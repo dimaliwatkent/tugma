@@ -80,7 +80,7 @@ const RhymeGenerator = () => {
   };
 
   return (
-    <div className="container mx-auto min-h-screen px-10 md:px-20">
+    <div className="mx-auto min-h-screen px-10 md:px-20">
       <form
         onSubmit={(e) => {
           e.preventDefault();

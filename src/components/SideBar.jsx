@@ -6,7 +6,7 @@ import { NavLink } from "react-router-dom";
 const SideBar = () => {
   return (
     <div className="z-20">
-      <div className="hidden sm:block pt-5 left-0 h-full min-h-screen w-16  flex-col bg-color3 shadow-lg">
+      <div className="hidden sm:block pt-5 left-0 h-full w-16  flex-col bg-color3 shadow-lg">
         <SideBarLink icon={<BsMusicNoteBeamed />} text="Rhyme" to="/rhyme" />
         <SideBarLink icon={<BsFillPencilFill />} text="Write" to="/write" />
         <SideBarLink icon={<FaRandom />} text="Random" to="/random" />

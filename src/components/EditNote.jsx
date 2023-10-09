@@ -83,7 +83,7 @@ const EditNote = () => {
   }, [content]);
 
   return (
-    <div className="container mx-auto min-h-screen px-10 md:px-20 pb-14">
+    <div className="container mx-auto min-h-screen px-10 md:px-20 pb-20">
       <div className="my-4">
         <h1>WRITE</h1>
 
