@@ -25,7 +25,7 @@ const Random = () => {
 
   return (
     <div
-      className="container mx-auto flex justify-center  min-h-screen"
+      className="container mx-auto flex justify-center min-h-screen pt-20"
       onClick={handleRandomClick}
     >
       <h1 className="text-center select-none">

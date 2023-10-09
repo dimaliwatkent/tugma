@@ -4,8 +4,8 @@ import React from "react";
 
 const Topbar = () => {
   return (
-    <header className="bg-color1">
-      <div className="container py-4 px-8">
+    <header className="bg-color1 fixed z-30 w-full">
+      <div className="py-4 px-8">
         <div className="flex items-center justify-between">
           <Link to="/Rhyme" className="logo-link flex items-center">
             <GiFeather size={50} style={{ color: "#f4ac48" }} />

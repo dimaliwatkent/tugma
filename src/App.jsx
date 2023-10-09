@@ -4,8 +4,8 @@ import { TopBar, SideBar, Rhyme, Write, Random, EditNote } from "./components";
 export default function App() {
   return (
     <div className="bg-color2 ">
-      <TopBar />
       <div className="flex">
+        <TopBar />
         <SideBar />
         <Routes>
           <Route path="/" element={<Navigate to="/rhyme" />} />

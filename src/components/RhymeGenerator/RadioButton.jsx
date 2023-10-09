@@ -5,7 +5,7 @@ const RadioButtons = ({ onRadioChange }) => {
 
   const radioButtons = [
     {
-      label: "MULTISYLLABIC",
+      label: "MULTI",
       id: "multisyllabic",
     },
     {
@@ -34,7 +34,7 @@ const RadioButtons = ({ onRadioChange }) => {
   };
 
   return (
-    <div className="flex w-full relative items-center justify-center m-4">
+    <div className="flex w-full relative items-center justify-center my-4 mx-auto">
       {radioButtons.map((radioButton, index) => (
         <div key={index} className="px-3">
           <input

@@ -22,7 +22,7 @@ const Write = () => {
   }, [notes]);
 
   return (
-    <div className="container mx-auto p-4 min-h-screen">
+    <div className="container mx-auto p-4 pt-20 min-h-screen">
       <h1>WRITE </h1>
 
       <div className="mt-8">

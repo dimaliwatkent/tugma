@@ -90,7 +90,7 @@ const EditNote = () => {
         <input
           type="text"
           id="title"
-          className="block w-full p-3 pl-4 pr-24 text-xl font-bold text-gray-900 border-2 border-color1 rounded-lg bg-color3  outline-none placeholder-color4"
+          className="block w-full py-3 px-4  text-xl font-bold text-gray-900 border-2 border-color1 rounded-lg bg-color3  outline-none placeholder-color4"
           value={title}
           onChange={handleTitleChange}
           placeholder="Title"
@@ -100,7 +100,7 @@ const EditNote = () => {
         <textarea
           ref={textAreaRef}
           id="content"
-          className="block w-full p-3 pl-4 pr-24 text-lg text-gray-900 border-2  border-color1 rounded-lg bg-color3 outline-none placeholder-color4 "
+          className="block w-full py-3 px-4 text-lg text-gray-900 border-2  border-color1 rounded-lg bg-color3 outline-none placeholder-color4 "
           rows="4"
           value={content}
           onChange={handleContentChange}
