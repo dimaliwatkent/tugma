@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import { Link, useParams } from "react-router-dom";
+import { useHotkeys } from "react-hotkeys-hook";
 
 const EditNote = () => {
   const [notes, setNotes] = useState([]);
@@ -46,7 +47,8 @@ const EditNote = () => {
     // event.target.style.height = `${event.target.scrollHeight}px`;
   };
 
-  const handleSaveNote = () => {
+  const handleSaveNote = (event) => {
+    event.preventDefault();
     const newNote = {
       title,
       content,
@@ -66,6 +68,11 @@ const EditNote = () => {
     setShowSave(true);
     setTimeout(() => setShowSave(false), 2000);
   };
+
+  useHotkeys("ctrl+s", (event) => {
+    handleSaveNote(event);
+  });
+
   useEffect(() => {
     if (textAreaRef.current) {
       const { scrollTop, scrollLeft } = document.documentElement;
@@ -117,6 +124,11 @@ const EditNote = () => {
           </div>
         )}
       </button>
+      <Link to={`/write`}>
+        <button className="text-color2 bg-color1 hover:bg-[#213f57] hover:text-white focus:outline-none font-medium rounded-lg text-lg px-4 py-2 ml-2">
+          Back
+        </button>
+      </Link>
     </div>
   );
 };
