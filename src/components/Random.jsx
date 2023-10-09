@@ -1,5 +1,4 @@
 import React, { useState, useRef, useEffect } from "react";
-import { findRhymes } from "./RhymeGenerator/RhymeGenerator";
 import fetchTagalogWordList from "./RhymeGenerator/WordListFetch";
 
 const Random = () => {
