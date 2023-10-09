@@ -25,7 +25,4 @@
   h2 {
     @apply font-merriweather font-bold text-2xl flex my-5 text-color1;
   }
-  .rhyme-result {
-    @apply bg-color3 rounded-full text-lg font-merriweather text-color1  hover:bg-color4/40;
-  }
 }

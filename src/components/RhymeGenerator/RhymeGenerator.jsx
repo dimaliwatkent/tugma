@@ -114,14 +114,14 @@ const RhymeGenerator = () => {
       {rhymes.length > 1 ? (
         <div>
           <h2>Rhyming Words: {rhymes.length}</h2>
-          <div className="grid grid-cols-3 md:grid-cols-5 gap-4">
+          <div className="flex flex-wrap md:grid md:grid-cols-4 xl:grid-cols-5 gap-3">
             {rhymes.map((rhyme, index) => (
               <div
                 key={index}
-                className="rhyme-result"
+                className="bg-color3 rounded-xl text-lg font-merriweather text-color1  hover:bg-color4/40"
                 onClick={() => copyToClipboard(index)}
               >
-                <p className="m-2 flex justify-center px-1">{rhyme}</p>
+                <p className="flex justify-center mx-3 my-2">{rhyme}</p>
                 {copiedIndex === index && (
                   <div className="text-color2 text-xs fixed bottom-0 left-0 right-0 text-center bg-color1">
                     Copied on Clipboard
